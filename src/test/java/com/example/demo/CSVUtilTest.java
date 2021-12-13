@@ -18,13 +18,14 @@ import java.util.stream.Stream;
 public class CSVUtilTest {
 
     @Test
-    void converterData(){
+    void converterData() throws IOException {
         List<Player> list = CsvUtilFile.getPlayers();
+        CsvUtilFile.createCsvFIle();
         assert list.size() == 18207;
     }
 
     @Test
-    void stream_filtrarJugadoresMayoresA35(){
+    void stream_filtrarJugadoresMayoresA35() throws IOException {
         List<Player> list = CsvUtilFile.getPlayers();
         Map<String, List<Player>> listFilter = list.parallelStream()
                 .filter(player -> player.age >= 35)
@@ -43,7 +44,7 @@ public class CSVUtilTest {
 
 
     @Test
-    void reactive_filtrarJugadoresMayoresA35(){
+    void reactive_filtrarJugadoresMayoresA35() throws IOException {
         List<Player> list = CsvUtilFile.getPlayers();
         Flux<Player> listFlux = Flux.fromStream(list.parallelStream()).cache();
         Mono<Map<String, Collection<Player>>> listFilter = listFlux
