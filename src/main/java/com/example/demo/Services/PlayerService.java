@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -43,5 +46,21 @@ public class PlayerService {
 
         return playersByClub;
 
+    }
+
+    public Flux<List<PlayerDb>> rankingPlayersByCountry(){
+
+        Flux<List<PlayerDb>> playersByCountry = playerRepository.findAll()
+                .buffer(100)
+                .flatMap(player -> Flux.fromStream(player.parallelStream()))
+                .distinct()
+                .groupBy(PlayerDb::getNational)
+                .flatMap(Flux::collectList)
+                .map(lista -> {
+                    lista.sort(Comparator.comparingDouble(PlayerDb::getRanking));
+                    return lista;
+                });
+
+        return playersByCountry;
     }
 }

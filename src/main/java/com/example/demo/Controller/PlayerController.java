@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api")
@@ -32,6 +34,11 @@ public class PlayerController {
     @GetMapping(value = "/players/filterByClub/{club}")
     public Flux<PlayerDb> getPlayersByClub(@PathVariable("club") String club){
         return playerService.getPlayersByClub(club);
+    }
+
+    @GetMapping(value = "/playersByCountries")
+    public Flux<List<PlayerDb>> rankingPlayersByCountry(){
+        return playerService.rankingPlayersByCountry();
     }
 
 }
