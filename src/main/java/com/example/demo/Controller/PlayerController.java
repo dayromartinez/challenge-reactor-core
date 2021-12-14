@@ -4,10 +4,7 @@ package com.example.demo.Controller;
 import com.example.demo.Models.PlayerDb;
 import com.example.demo.Services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 @RestController
@@ -27,9 +24,9 @@ public class PlayerController {
         return playerService.getPlayers();
     }
 
-    @GetMapping(value = "/players/filterByAge")
-    public Flux<PlayerDb> getPlayersOlderThan34(){
-        return playerService.getPlayersOlderThan34();
+    @GetMapping(value = "/players/filterByClub/{club}")
+    public Flux<PlayerDb> getPlayersByClub(@PathVariable("club") String club){
+        return playerService.getPlayersOlderThan34ByClub(club);
     }
 
 }

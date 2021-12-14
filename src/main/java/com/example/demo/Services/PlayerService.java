@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.util.Objects;
+
 @Service
 public class PlayerService {
 
@@ -21,14 +23,15 @@ public class PlayerService {
 
     }
 
-    public Flux<PlayerDb> getPlayersOlderThan34(){
-
-        Flux<PlayerDb> playersOlderThan34 = playerRepository.findAll()
+    public Flux<PlayerDb> getPlayersOlderThan34ByClub(String club){
+        System.out.println(club);
+        Flux<PlayerDb> playersOlderThan34ByClub = playerRepository.findAll()
                 .buffer(100)
                 .flatMap(player -> Flux.fromStream(player.parallelStream()))
-                .filter(jugador -> jugador.getAge() > 34);
+                .filter(playerNoNullClub -> Objects.nonNull(playerNoNullClub.getClub()))
+                .filter(jugador -> jugador.getAge() > 34  && jugador.getClub().equals(club));
 
-        return playersOlderThan34;
+        return playersOlderThan34ByClub;
 
     }
 }
