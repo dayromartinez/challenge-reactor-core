@@ -47,44 +47,52 @@ public class CsvUtilFile {
 
         FileWriter csvWriter = new FileWriter("players.csv");
 
+        csvWriter.append("id");
+        csvWriter.append(",");
+        csvWriter.append("name");
+        csvWriter.append(",");
+        csvWriter.append("age");
+        csvWriter.append(",");
+        csvWriter.append("icon");
+        csvWriter.append(",");
+        csvWriter.append("national");
+        csvWriter.append(",");
+        csvWriter.append("winners");
+        csvWriter.append(",");
+        csvWriter.append("gamers");
+        csvWriter.append(",");
+        csvWriter.append("ranking");
+        csvWriter.append(",");
+        csvWriter.append("club");
+        csvWriter.append(",\n");
+
         try (CSVReader reader = new CSVReader(new FileReader(uri.getFile()))) {
 
             List<String[]> registers = reader.readAll();
             registers.stream().forEach(jugador -> {
+
                 try {
-                    csvWriter.append("id");
-                    csvWriter.append(",");
-                    csvWriter.append(jugador[0]);
-                    csvWriter.append(",");
-                    csvWriter.append("name");
+
+
+                    csvWriter.append(jugador[0].trim());
                     csvWriter.append(",");
                     csvWriter.append(jugador[1]);
                     csvWriter.append(",");
-                    csvWriter.append("age");
-                    csvWriter.append(",");
-                    csvWriter.append(jugador[2]);
-                    csvWriter.append(",");
-                    csvWriter.append("icon");
+                    csvWriter.append(Optional.of(jugador[2].trim()).filter(h -> !h.isBlank()).orElse("0"));
                     csvWriter.append(",");
                     csvWriter.append(jugador[3]);
                     csvWriter.append(",");
-                    csvWriter.append("national");
-                    csvWriter.append(",");
                     csvWriter.append(jugador[4]);
-                    csvWriter.append(",");
-                    csvWriter.append("winners");
                     csvWriter.append(",");
                     csvWriter.append(jugador[5]);
                     csvWriter.append(",");
-                    csvWriter.append("gamers");
-                    csvWriter.append(",");
                     csvWriter.append(jugador[6]);
                     csvWriter.append(",");
-                    csvWriter.append("club");
+                    csvWriter.append(Double.toString(Double.parseDouble(jugador[5]) / Double.parseDouble(jugador[6])));
                     csvWriter.append(",");
                     csvWriter.append(jugador[7]);
-                    csvWriter.append(",");
-                    csvWriter.append("\n");
+                    csvWriter.append(",\n");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
