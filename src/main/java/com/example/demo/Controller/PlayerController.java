@@ -24,9 +24,14 @@ public class PlayerController {
         return playerService.getPlayers();
     }
 
+    @GetMapping(value = "/players/filerByAge")
+    public Flux<PlayerDb> getPlayersOlderThan34(){
+        return playerService.getPlayersOlderThan34();
+    }
+
     @GetMapping(value = "/players/filterByClub/{club}")
     public Flux<PlayerDb> getPlayersByClub(@PathVariable("club") String club){
-        return playerService.getPlayersOlderThan34ByClub(club);
+        return playerService.getPlayersByClub(club);
     }
 
 }

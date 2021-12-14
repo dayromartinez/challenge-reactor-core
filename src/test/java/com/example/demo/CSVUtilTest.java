@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.Models.PlayerDb;
+import com.example.demo.Services.PlayerService;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CSVUtilTest {
+
+    private PlayerService playerService;
 
     @Test
     void converterData() throws IOException {
@@ -43,13 +47,13 @@ public class CSVUtilTest {
         assert listFilter.block().size() == 322;
     }
 
-    @Test
+    /*@Test
     void createCsv() throws IOException {
 
         List<String[]> players = CsvUtilFile.createCsvFIle();
         assert !players.isEmpty();
 
-    }
+    }*/
 
     @Test
     void stream_filtrarJugadoresMayoresA35() throws IOException {
@@ -90,7 +94,4 @@ public class CSVUtilTest {
 
         assert listFilter.block().size() == 322;
     }
-
-
-
 }
