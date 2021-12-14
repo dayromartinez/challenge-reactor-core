@@ -20,8 +20,35 @@ public class CSVUtilTest {
     @Test
     void converterData() throws IOException {
         List<Player> list = CsvUtilFile.getPlayers();
-        CsvUtilFile.createCsvFIle();
         assert list.size() == 18207;
+    }
+
+    @Test
+    void converterDataToFlux() throws IOException {
+        Flux<Player> list = CsvUtilFile.getAllPlayers();
+        Mono<Map<String, Collection<Player>>> listFilter = list
+                .filter(player -> player.age >= 35)
+                .map(player -> {
+                    player.name = player.name.toUpperCase(Locale.ROOT);
+                    return player;
+                })
+                .buffer(100)
+                .flatMap(playerA -> list
+                        .filter(playerB -> playerA.stream()
+                                .anyMatch(a ->  a.club.equals(playerB.club)))
+                )
+                .distinct()
+                .collectMultimap(Player::getClub);
+
+        assert listFilter.block().size() == 322;
+    }
+
+    @Test
+    void createCsv() throws IOException {
+
+        List<String[]> players = CsvUtilFile.createCsvFIle();
+        assert !players.isEmpty();
+
     }
 
     @Test

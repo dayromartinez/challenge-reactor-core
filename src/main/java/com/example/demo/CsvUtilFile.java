@@ -41,7 +41,7 @@ public class CsvUtilFile {
         }
     }
 
-    public static void createCsvFIle() throws IOException {
+    public static List<String[]> createCsvFIle() throws IOException {
 
         var uri =  CsvUtilFile.class.getClassLoader().getResource("data.csv");
 
@@ -100,17 +100,18 @@ public class CsvUtilFile {
 
             csvWriter.flush();
             csvWriter.close();
+            return registers;
 
         } catch (IOException | CsvException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
 
-    /*public static Flux<Player> getAllPlayers(){
+    public static Flux<Player> getAllPlayers(){
         var uri =  CsvUtilFile.class.getClassLoader().getResource("data.csv");
         List<Player> list = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader(uri.getFile()))) {
-            Flux<String[]> registers = reader.readAll();
+            List<String[]> registers = reader.readAll();
             registers.forEach(strings -> list.add(new Player(
                     Integer.parseInt(strings[0].trim()),
                     strings[1],
@@ -122,10 +123,11 @@ public class CsvUtilFile {
                     strings[7]
             )));
 
-            return list;
+            Flux<Player> listFlux = Flux.fromStream(list.parallelStream()).cache();
+            return listFlux;
 
         } catch (IOException | CsvException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
-    }*/
+    }
 }
